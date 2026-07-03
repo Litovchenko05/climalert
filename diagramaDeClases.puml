@@ -1,0 +1,26 @@
+@startuml
+
+interface WeatherProvider <<Adapter>> {
+    + obtenerClimaActual(Ciudad): Clima
+}
+
+class WeatherApiClient implements WeatherProvider {
+    + obtenerClimaActual(Ciudad): Clima
+}
+
+class EvaluadorClimatico {
+    - condiciones: Set<CondicionDeAlerta>
+}
+
+interface CondicionDeAlerta {
+    + evaluar(clima: Clima): Optional<Alerta>
+}
+
+class SofocacionAmbiental implements CondicionDeAlerta {
+    - temperatura: double
+    - humedad: int
+
+    + evaluar(clima: Clima): Optional<Alerta>
+}
+EvaluadorClimatico --> CondicionDeAlerta
+@enduml
