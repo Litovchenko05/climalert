@@ -1,7 +1,6 @@
-package utn.ba.ddsi.climalert.services.dto;
+package utn.ba.ddsi.climalert.clients.weatherapi.dto;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -11,10 +10,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 
-public class Condiciones {
-  @JsonProperty("temp_c")
-  private double temperatura;
-  
-  @JsonProperty("humidity")
-  private int humedad;
+public class LocationDTO {
+  private String name;
+  private String country;
+  private String localtime;
 }

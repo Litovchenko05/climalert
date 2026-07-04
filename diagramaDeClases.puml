@@ -1,6 +1,6 @@
 @startuml
 
-interface WeatherProvider <<Adapter>> {
+interface WeatherProvider {
     + obtenerClimaActual(Ciudad): Clima
 }
 
@@ -22,5 +22,21 @@ class SofocacionAmbiental implements CondicionDeAlerta {
 
     + evaluar(clima: Clima): Optional<Alerta>
 }
-EvaluadorClimatico --> CondicionDeAlerta
+
+class Clima {
+    - id: long
+    - pais: String
+    - ciudad: String
+    - fechaYHora: String
+    - temperatura: double
+    - humedad: int
+}
+
+class Alerta {
+    - id: long
+}
+
+EvaluadorClimatico --> "*" CondicionDeAlerta
+WeatherProvider ..> Clima
+CondicionDeAlerta ..> Alerta
 @enduml
