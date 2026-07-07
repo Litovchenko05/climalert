@@ -16,4 +16,9 @@ public class ClimaScheduler {
   public void obtenerClimaActualDeBuenosAires(){
     climaService.obtenerClimaActual("Buenos Aires");
   }
+
+  @Scheduled(fixedRate = 60000)
+  public void analizarUltimoClimaDeBuenosAires(){
+    climaService.analizarUltimoClima("Buenos Aires");
+  }
 }

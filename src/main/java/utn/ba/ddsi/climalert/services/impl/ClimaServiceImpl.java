@@ -1,24 +1,41 @@
 package utn.ba.ddsi.climalert.services.impl;
 
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
+import utn.ba.ddsi.climalert.models.entities.Alerta;
 import utn.ba.ddsi.climalert.models.entities.Clima;
+import utn.ba.ddsi.climalert.repositories.AlertaRepository;
 import utn.ba.ddsi.climalert.repositories.ClimaRepository;
 import utn.ba.ddsi.climalert.services.ClimaService;
+import utn.ba.ddsi.climalert.services.EvaluadorClimatico;
 import utn.ba.ddsi.climalert.services.WeatherProvider;
+import java.util.List;
 
+@AllArgsConstructor
 @Service
 public class ClimaServiceImpl implements ClimaService {
-  WeatherProvider weatherProvider;
-  ClimaRepository climaRepository;
+  private final WeatherProvider weatherProvider;
+  private final ClimaRepository climaRepository;
+  private final AlertaRepository alertaRepository;
+  private final EvaluadorClimatico evaluadorClimatico;
 
-  public ClimaServiceImpl(WeatherProvider weatherProvider, ClimaRepository climaRepository) {
-    this.weatherProvider = weatherProvider;
-    this.climaRepository = climaRepository;
-  }
 
   @Override
   public void obtenerClimaActual(String ciudad) {
     Clima clima = weatherProvider.obtenerClimaActual(ciudad);
     climaRepository.save(clima); // TODO: Quizás poner alguna validación antes (?
+  }
+
+  @Override
+  public void analizarUltimoClima(String ciudad){
+    Clima clima = climaRepository.findUltimoClima(ciudad);
+    if (clima == null || clima.isAnalizado()) {
+      return;
+    }
+    List<Alerta> alertas = evaluadorClimatico.evaluar(clima);
+    if (alertas != null) {
+      alertas.forEach(alertaRepository::save);
+      // TODO: Agregar la parte de notificar, todavía no pensé como hacerlo.
+    }
   }
 }

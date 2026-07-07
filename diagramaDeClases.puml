@@ -8,15 +8,17 @@ class WeatherApiClient implements WeatherProvider {
     + obtenerClimaActual(Ciudad): Clima
 }
 
-class EvaluadorClimatico {
-    - condiciones: Set<CondicionDeAlerta>
+class EvaluadorClimático {
+    - condiciones: Set<CondiciónDeAlerta>
+
+    + evaluar(clima: Clima): List<Alerta>
 }
 
-interface CondicionDeAlerta {
+interface CondiciónDeAlerta {
     + evaluar(clima: Clima): Optional<Alerta>
 }
 
-class SofocacionAmbiental implements CondicionDeAlerta {
+class SofocaciónAmbiental implements CondiciónDeAlerta {
     - temperatura: double
     - humedad: int
 
@@ -24,19 +26,26 @@ class SofocacionAmbiental implements CondicionDeAlerta {
 }
 
 class Clima {
-    - id: long
+    - id: Long
     - pais: String
     - ciudad: String
-    - fechaYHora: String
-    - temperatura: double
-    - humedad: int
+    - fechaYHora: LocalDateTime
+    - temperatura: Double
+    - humedad: Integer
 }
 
 class Alerta {
-    - id: long
+    - id: Long
+    - ciudad: String
+    - nombre: String
+    - descripcion: String
+    - fechaYHora: LocalDateTime
 }
 
-EvaluadorClimatico --> "*" CondicionDeAlerta
-WeatherProvider ..> Clima
-CondicionDeAlerta ..> Alerta
+
+
+EvaluadorClimático --> "*" CondiciónDeAlerta
+EvaluadorClimático ..left> Alerta
+WeatherProvider ..right> Clima
+
 @enduml

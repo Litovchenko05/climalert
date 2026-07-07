@@ -33,4 +33,18 @@ public class InMemoryClimaRepository implements ClimaRepository {
     }
     climas.removeIf(c -> c.getId().equals(clima.getId()));
   }
+
+  @Override
+  public Clima findUltimoClima(String ciudad) {
+    if (ciudad == null) {
+      return null;
+    }
+    for (int i = climas.size() - 1; i >= 0; i--) {
+      Clima clima = climas.get(i);
+      if (ciudad.equalsIgnoreCase(clima.getCiudad())) {
+        return clima;
+      }
+    }
+    return null;
+  }
 }

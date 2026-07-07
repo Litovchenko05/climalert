@@ -7,13 +7,14 @@ import utn.ba.ddsi.climalert.config.WeatherApiProperties;
 import utn.ba.ddsi.climalert.clients.weatherapi.dto.WeatherApiResponse;
 import utn.ba.ddsi.climalert.models.entities.Clima;
 import utn.ba.ddsi.climalert.services.WeatherProvider;
+import utn.ba.ddsi.climalert.utils.DateTimeMapper;
 import java.net.URI;
 import java.util.Optional;
 
 @Component
 public class WeatherApiClient implements WeatherProvider {
-  private RestTemplate restTemplate;
-  private WeatherApiProperties properties;
+  private final RestTemplate restTemplate;
+  private final WeatherApiProperties properties;
 
   public WeatherApiClient(RestTemplate restTemplate, WeatherApiProperties properties) {
     this.restTemplate = restTemplate;
@@ -35,9 +36,10 @@ public class WeatherApiClient implements WeatherProvider {
         null,
         response.getLocation().getCountry(),
         response.getLocation().getName(),
-        response.getLocation().getLocaltime(),
+        DateTimeMapper.toLocalDateTime(response.getLocation().getLocaltime()),
         response.getCurrent().getTemperature(),
-        response.getCurrent().getHumidity()
+        response.getCurrent().getHumidity(),
+        false
     );
   }
 }
