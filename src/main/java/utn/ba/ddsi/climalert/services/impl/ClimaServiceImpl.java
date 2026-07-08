@@ -1,9 +1,11 @@
 package utn.ba.ddsi.climalert.services.impl;
 
 import lombok.AllArgsConstructor;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import utn.ba.ddsi.climalert.models.entities.Alerta;
 import utn.ba.ddsi.climalert.models.entities.Clima;
+import utn.ba.ddsi.climalert.models.events.AlertaGeneradaEvent;
 import utn.ba.ddsi.climalert.repositories.AlertaRepository;
 import utn.ba.ddsi.climalert.repositories.ClimaRepository;
 import utn.ba.ddsi.climalert.services.ClimaService;
@@ -18,6 +20,7 @@ public class ClimaServiceImpl implements ClimaService {
   private final ClimaRepository climaRepository;
   private final AlertaRepository alertaRepository;
   private final EvaluadorClimatico evaluadorClimatico;
+  private final ApplicationEventPublisher eventPublisher;
 
 
   @Override
@@ -34,8 +37,10 @@ public class ClimaServiceImpl implements ClimaService {
     }
     List<Alerta> alertas = evaluadorClimatico.evaluar(clima);
     if (alertas != null) {
-      alertas.forEach(alertaRepository::save);
-      // TODO: Agregar la parte de notificar, todavía no pensé como hacerlo.
+      alertas.forEach(alerta -> {
+        alertaRepository.save(alerta);
+        eventPublisher.publishEvent(new AlertaGeneradaEvent(alerta));
+      });
     }
   }
 }

@@ -1,3 +1,14 @@
 weather-api:
   base-url: http://api.weatherapi.com/v1
-  key: ${WEATHER_API_KEY:83997b0f544440d586e123306260207}
+  key: ${WEATHER_API_KEY:api-key}
+
+spring:
+  mail:
+    host: sandbox.smtp.mailtrap.io
+    port: 2525
+    username: user
+    password: contraseña
+    properties:
+      mail:
+        mail.smtp.auth: true
+        mail.smtp.starttls.enable: true

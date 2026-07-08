@@ -38,10 +38,22 @@ class Alerta {
     - id: Long
     - ciudad: String
     - nombre: String
-    - descripcion: String
     - fechaYHora: LocalDateTime
 }
 
+class Interesado {
+    - id: Long
+    - nombre: String
+    - email: String
+}
+
+interface Notificador {
+    + enviarAlerta(destinatario, cuerpo)
+}
+
+class EmailNotificador implements Notificador {
+    + enviarAlerta(destinatario, cuerpo)
+}
 
 
 EvaluadorClimático --> "*" CondiciónDeAlerta

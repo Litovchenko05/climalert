@@ -1,10 +1,12 @@
 package utn.ba.ddsi.climalert.models.entities;
 
+import org.springframework.stereotype.Component;
 import java.util.Optional;
 
+@Component
 public class SofocacionAmbiental implements CondicionDeAlerta{
   double TEMPERATURA = 35;
-  int HUMEDAD = 70;
+  int HUMEDAD = 60;
   String NOMBRE = "Sofocación Ambiental";
 
   @Override
